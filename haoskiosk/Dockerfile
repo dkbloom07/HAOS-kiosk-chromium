@@ -69,9 +69,10 @@ RUN apk update && apk add --no-cache \
 
 #===============================================================================
 
-##### Optional: bake in Chromium at build time (opt-in via BUILD_BROWSER=chromium).
-##### Default 'luakit' pulls nothing in, so the luakit image is unchanged.
-ARG BUILD_BROWSER=luakit
+##### Bake in Chromium at build time by default so the runtime `browser: chromium`
+##### config option actually has a binary to launch. Supervisor has no way to pass
+##### a custom --build-arg, so BUILD_BROWSER must default to 'chromium' here.
+ARG BUILD_BROWSER=chromium
 RUN if [ "$BUILD_BROWSER" = "chromium" ]; then \
         apk add --no-cache chromium \
         && rm -rf /var/cache/apk/*; \
